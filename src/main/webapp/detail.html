@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Liste des Personnes</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    </head>
+    <body>
+        <h1>Détail d'une personne</h1>
+        <ul id="detail-personne">
+        </ul>
+        <a href = "liste.html">Retour à la liste</a>
+        
+        <script>
+            function ajouter(personne) {
+                $('#detail-personne').append('<li>' + personne.civilite +' ' 
+                        + personne.prenom + ' ' + personne.nom
+                        + ' (' + personne.mail + ')</li>')
+                        .append('<li>' + personne.dateNaissance + ' ' + personne.adresse +'</li>');
+            }
+            $(document).ready(function () {
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'POST',
+                    data: {
+                        action: 'ConsulterDetailsPersonne',
+                        id: window.location.search.substring(4)
+                    },
+                    dataType: 'json'
+                }).done(function (data) {
+                    $('#detail-personne').empty();
+                    ajouter(data.personne);
+                });
+            });
+        </script>
+    </body>
+</html>
